@@ -1,5 +1,10 @@
 #include "get_next_line.h"
 
+//remove a linha lida. Ela recebe como parâmetro a static , 
+//nela eu procuro até a quebra de linha \n ou até chegar no final,
+//se chega a EOF, dou um free na variável e retorno NULL , senão, 
+//eu malloco uma nova variavel com o (tamanho total de backup, menos o tamanho da linha),
+//copio o restante de backup pra uma nova variável e dou free nela.
 char		*ft_remove(char *backup)
 {
 	int		i;
@@ -24,6 +29,11 @@ char		*ft_remove(char *backup)
 }
 
 // bBuscar linha parea returnar
+// Como parâmetro ainda vamos usar o backup, faço uma verificação se a backup 
+//não está com o primeiro caracter como null byte ('\0')
+//percorro ela inteira até achar uma ('\n') ou o final dela, 
+//crio com o malloc uma string com o tamanho que li + 2 espaços, pra caso haja um \n ,
+//eu coloque ele e logo em seguida o (\0) e retorno essa linha.
 char	*ft_get_line(char *backup)
 {
 	char	*line;
@@ -45,7 +55,13 @@ char	*ft_get_line(char *backup)
 		line[size++] = '\n';
 	return (line);
 }
-
+//Ler arquivo
+//recebe como parâmetro o fd do arquivo e a variavel estática.
+//crio um buffer com o tamnaho do BUFFER_SIZE e uso a função read() 
+//pra ler o arquivo até encontrar o final dele - que seria retornado 0 - ou até encontrar uma linha (\n)
+//caso ocorra algum erro, o laço de repetição é parado pois vai ser retornado -1,
+//free a variavel buffer que tinha mallocado e retorno NULL,
+//caso contrário, uso a função ft_strjoin()(onde adicionei free) para juntar o conteúdo de backup com o buffer.
 char	*ft_read_file(int fd, char *backup)
 {
 	char	*buffer;
@@ -54,11 +70,11 @@ char	*ft_read_file(int fd, char *backup)
 	if (!backup)
 		backup= ft_calloc(1, 1);
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	byte_read = 1;
+	byte_read = 1; //inicializo em 1 para entrar no loop pela primeira ve
 	while (byte_read > 0 && !ft_strchr(backup, '\n'))
 	{
 		byte_read = read(fd, buffer, BUFFER_SIZE);
-		if (byte_read < 0)
+		if (byte_read < -1) // porque se read der erro devolve 0
 		{
 			free(buffer);
 			return (NULL);
