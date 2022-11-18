@@ -97,11 +97,11 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	backup = ft_read_file(fd, backup);
+	backup = ft_read_file(fd, backup); //chamo a funcao que vai ler do buffer e guardo a nova backup.
 	if (!backup)
 		return (NULL);
-	line = ft_get_line(backup);
-	backup = ft_remove(backup);
+	line = ft_get_line(backup); // a linha a ser usada
+	backup = ft_remove(backup); //remove a linha lida.
 	return (line);
 }
 
