@@ -11,32 +11,32 @@
 /* ************************************************************************** */
 #include "get_next_line.h"
 
-char	*ft_strjoin(char *s, char *buffer)
+
+char	*ft_strjoin(char *s1, char *s2)
 {
+	char	*newstr;
 	size_t	i;
 	size_t	j;
-	char	*str;
+	size_t	lens1;
+	size_t	lens2;
 
-	if (!s)
-	{
-		s = (char *)malloc(1 * sizeof(char));
-		s[0] = '\0';
-	}
-	if (!s || !buffer)
+	if (!s1)
 		return (NULL);
-	str = malloc(sizeof(char) * ((ft_strlen(s) + ft_strlen(buffer)) + 1));
-	if (str == NULL)
+	lens1 = ft_strlen(s1);
+	lens2 = ft_strlen(s2);
+	newstr = (char *)malloc (sizeof(*s1) * (lens1 + lens2 + 1));
+	if (!newstr)
 		return (NULL);
 	i = -1;
 	j = 0;
-	if (s)
-		while (s[++i] != '\0')
-			str[i] = s[i];
-	while (buffer[j] != '\0')
-		str[i++] = buffer[j++];
-	str[ft_strlen(s) + ft_strlen(buffer)] = '\0';
-	free(s);
-	return (str);
+	while (s1[++i])
+		newstr[j++] = s1[i];
+	i = -1;
+	while (s2[++i])
+		newstr[j++] = s2[i];
+	newstr[j] = '\0';
+	free(s1);
+	return (newstr);
 }
 
 char	*ft_strchr(const char *s, int c)
@@ -64,19 +64,22 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	mem = malloc(nmemb * size);
 	if (mem == NULL)
 		return (NULL);
-	while (i < nmemb * size)
+	while ((nmemb * size--) > 0)
 	{
 		mem[i] = 0;
 		i++;
 	}
-	return (mem);
+	return ((void *)mem);
 }
+
 
 size_t	ft_strlen(const char *str)
 {
 	int	i;
 
 	i = 0;
+	if(!str)
+		return(0);
 	while (str[i])
 		i++;
 	return (i);
