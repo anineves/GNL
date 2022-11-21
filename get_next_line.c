@@ -84,7 +84,7 @@ char	*ft_get_line(char *backup)
 char	*ft_read_file(int fd, char *backup)
 {
 	char	*buffer;
-	int		byte_read;
+	ssize_t	byte_read;
 
 	if (!backup)
 		backup = ft_calloc(1, sizeof(char));
@@ -95,7 +95,7 @@ char	*ft_read_file(int fd, char *backup)
 	{
 		byte_read = read(fd, buffer, BUFFER_SIZE);
 		if (byte_read == -1 || (byte_read == 0 && backup == NULL))
-// porque se read der erro devolve 0
+// porque se read der erro devolve -1
 		{
 			free(buffer);
 			free(backup);
@@ -129,9 +129,13 @@ char	*get_next_line(int fd)
 int main()
 {
 	int fd = open("teste.txt", O_RDONLY);
-	printf("linha1 %s", get_next_line(fd));
+	//char *s;	
+	//s = get_next_line(fd);
+	//printf("linha1 %s", s);
 	printf("linha2 %s", get_next_line(fd));
 	printf("linha3 %s", get_next_line(fd));
 	printf("linha4 %s", get_next_line(fd));
+	//free(s);
+	//close(fd);
 	return 0;
 } */
